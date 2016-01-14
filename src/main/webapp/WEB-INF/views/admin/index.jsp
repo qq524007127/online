@@ -1,0 +1,128 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="basePth" value="${pageContext.request.contextPath}"></c:set>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>挚合电商后台管理系统</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/icon.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/core/app.js"></script>
+    <script type="text/javascript">
+        app.setBasePath('${pageContext.request.contextPath}');
+        app.setup();
+    </script>
+</head>
+<body class="easyui-layout">
+<!-- begin of header -->
+<div class="wu-header" data-options="region:'north',border:false,split:false">
+    <div class="wu-header-left">
+        <h1>挚合电商管理后台</h1>
+    </div>
+    <div class="wu-header-right">
+        <p><strong class="easyui-tooltip" title="2条未读消息">${currentAdmin.adminCode}</strong>，欢迎您！</p>
+
+        <p><a href="#">网站首页</a>|<a href="#">支持论坛</a>|<a href="#">帮助中心</a>|<a href="${basePth}/admin/logout">安全退出</a></p>
+    </div>
+</div>
+<!-- end of header -->
+<!-- begin of sidebar -->
+<div class="wu-sidebar" data-options="region:'west',split:true,border:true,title:'导航菜单',maxWidth:220,minWidth:180">
+    <div class="easyui-accordion" data-options="border:false,fit:true">
+        <c:forEach var="root" items="${menus}">
+            <div title="${root.menuName}" data-options="iconCls:'icon-application-form-edit'" style="padding:5px;">
+                <ul class="easyui-tree wu-side-tree">
+                        ${childList}
+                    <c:forEach var="child" items="${root.childList}">
+                        <li iconCls="icon-chart-organisation">
+                            <a href="javascript:void(0)" data-icon="icon-chart-organisation"
+                               data-link="${pageContext.request.contextPath}${child.menuUrl}" iframe="0">
+                                    ${child.menuName}
+                            </a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:forEach>
+        <div title="信息维护" data-options="iconCls:'icon-application-form-edit'" style="padding:5px;">
+            <ul class="easyui-tree wu-side-tree">
+                <li iconCls="icon-chart-organisation">
+                    <a href="javascript:void(0)" data-icon="icon-chart-organisation"
+                       data-link="${pageContext.request.contextPath}/admin/merchantInfoPage">
+                        商家详细信息
+                    </a>
+                </li>
+                <li iconCls="icon-chart-organisation">
+                    <a href="javascript:void(0)" data-icon="icon-chart-organisation"
+                       data-link="${pageContext.request.contextPath}/admin/api/merchant/editMerchantRegisterInfo">
+                        商家信息修改
+                    </a>
+                </li>
+                <li iconCls="icon-chart-organisation">
+                    <a href="javascript:void(0)" data-icon="icon-chart-organisation"
+                       data-link="${pageContext.request.contextPath}/admin/updateImg">
+                        商家图片修改
+                    </a>
+                </li>
+                <li iconCls="icon-chart-organisation">
+                    <a href="javascript:void(0)" data-icon="icon-chart-organisation"
+                       data-link="${pageContext.request.contextPath}/admin/changePwd">
+                        密码修改
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- end of sidebar -->
+<!-- begin of main -->
+<div class="wu-main" data-options="region:'center'">
+    <div id="main-tabs" class="easyui-tabs" data-options="border:false,fit:true">
+        <div title="首页"
+             data-options="href:'${pageContext.request.contextPath}/welcome',closable:false,iconCls:'icon-home',cls:'pd3'"></div>
+    </div>
+</div>
+<!-- end of main -->
+<!-- begin of footer -->
+<div class="wu-footer" data-options="region:'south',border:true,split:false">
+    &copy; 2015 云南挚合科技有限公司
+</div>
+<!-- end of footer -->
+<script type="text/javascript">
+    $(function () {
+        $('.wu-side-tree a').bind("click", function () {
+            var title = $(this).text();
+            var url = $(this).attr('data-link');
+            var iconCls = $(this).attr('data-icon');
+            var iframe = $(this).attr('iframe') == 1 ? true : false;
+            addTab(title, url, iconCls, true);
+        });
+    })
+
+    /**
+     * Name 添加菜单选项
+     * Param title 名称
+     * Param href 链接
+     * Param iconCls 图标样式
+     * Param iframe 链接跳转方式（true为iframe，false为href）
+     */
+    function addTab(title, href, iconCls, iframe) {
+        var tabPanel = $('#main-tabs');
+        if (!tabPanel.tabs('exists', title)) {
+            var content = '<iframe scrolling="auto" frameborder="0"  src="' + href + '" style="width:100%;height:100%;"></iframe>';
+            tabPanel.tabs('add', {
+                title: title,
+                content: content,
+                fit: true,
+                cls: 'pd3',
+                border: false,
+                closable: true
+            });
+        }
+        else {
+            tabPanel.tabs('select', title);
+        }
+    }
+</script>
+</body>
+</html>

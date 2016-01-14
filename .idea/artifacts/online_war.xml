@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="online:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="online.war">
+      <element id="artifact" artifact-name="online:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/libs/pingpp-java-2.1.1.jar" />
+          <element id="library" level="module" name="jeasyui-0.0.4" module-name="online" />
+          <element id="file-copy" path="$PROJECT_DIR$/libs/jeasyui-0.0.4.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
